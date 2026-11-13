@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TS Pass · Aris</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--red:#C8102E;--navy:#17327A;--blue:#2F67D8;--pink:#FBE9EC;--soft:#EAEEF9;--bg:#F6F8FD;--card:#fff;--tx:#1B2340;--mut:#5E6788;--line:#DCE3F5;--shadow:#C9D2EE;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1530;--card:#16204A;--tx:#EEF1FC;--mut:#A3ADD3;--line:#2A3668;--pink:#3A1A2B;--soft:#1D2A5E;--shadow:#080C1E;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E1530;--card:#16204A;--tx:#EEF1FC;--mut:#A3ADD3;--line:#2A3668;--pink:#3A1A2B;--soft:#1D2A5E;--shadow:#080C1E;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;height:100%;font-family:'Poppins',system-ui,sans-serif;background:var(--soft);color:var(--tx);display:flex;justify-content:center}
+#app{position:relative;width:100%;max-width:430px;height:100%;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:500px){#app{height:min(860px,100%);margin:auto;border-radius:32px;box-shadow:0 20px 60px var(--shadow);border:6px solid var(--navy)}}
+header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--card);border-bottom:2px solid var(--line)}
+header b{font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-.3px}
+header b i{color:var(--red);font-style:normal}
+.chip{margin-left:auto;display:flex;gap:6px}
+.chip span{background:var(--soft);border-radius:99px;padding:4px 8px;font-weight:700;font-size:12px}
+main{flex:1;overflow-y:auto;padding:16px 16px 90px}
+section{display:none}section.on{display:block;animation:pop .35s cubic-bezier(.3,1.5,.5,1)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+h2{font-size:20px;font-weight:800;margin:4px 0 12px;color:var(--navy)}
+:root[data-theme="dark"] h2,:root:not([data-theme="light"]) h2{color:var(--tx)}
+h3{margin:0 0 4px;font-size:15px;font-weight:700}
+p{margin:0;font-size:13.5px;color:var(--mut);line-height:1.45}
+.card{background:var(--card);border:2px solid var(--line);border-bottom-width:5px;border-radius:20px;padding:14px;margin-bottom:14px}
+.btn{width:100%;border:0;border-bottom:5px solid #8E0A20;background:var(--red);color:#fff;font:700 15px 'Poppins',sans-serif;padding:13px;border-radius:16px;cursor:pointer;transition:transform .1s,border-width .1s}
+.btn:active{transform:translateY(4px);border-bottom-width:1px}
+.btn.blue{background:var(--blue);border-bottom-color:#1B46A3}
+.btn.ghost{background:var(--soft);color:var(--navy);border-bottom-color:var(--line)}
+:root[data-theme="dark"] .btn.ghost,:root:not([data-theme="light"]) .btn.ghost{color:var(--tx)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.teo{display:flex;align-items:flex-end;gap:10px;margin-bottom:14px}
+.teo svg{width:96px;flex:none;animation:bob 2.4s ease-in-out infinite;cursor:pointer;transform-origin:bottom}
+.teo svg:active{animation:jump .5s}
+@keyframes bob{50%{transform:translateY(-7px) rotate(-3deg)}}
+@keyframes jump{40%{transform:translateY(-26px) scale(1.1)}}
+.eye{animation:blink 4s infinite;transform-origin:center;transform-box:fill-box}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.bubble{position:relative;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 14px;font-size:14px;font-weight:500;flex:1;animation:pop .4s}
+.bubble::before{content:"";position:absolute;left:-9px;bottom:22px;width:14px;height:14px;background:var(--card);border-left:2px solid var(--line);border-bottom:2px solid var(--line);transform:rotate(45deg)}
+.bar{height:14px;background:var(--soft);border-radius:99px;overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--red));border-radius:99px;transition:width .8s cubic-bezier(.3,1.3,.5,1)}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--tx);border:2px solid var(--line);border-bottom-width:5px;border-radius:14px;padding:11px 12px;margin-top:8px;font:500 14px 'Poppins',sans-serif;cursor:pointer}
+.opt.ok{background:#DDF5E3;border-color:#3DB360;color:#14502A;animation:jump .5s}
+.opt.no{background:var(--pink);border-color:var(--red);color:var(--red);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.ico{font-size:30px;width:54px;height:54px;display:grid;place-items:center;background:var(--pink);border-radius:16px;flex:none}
+.perk{display:flex;gap:12px;align-items:center}
+.perk .btn{width:auto;padding:9px 14px;font-size:13px}
+.perk.done .ico{background:#DDF5E3}
+.steps{list-style:none;margin:10px 0 0;padding:0}
+.steps li{display:flex;gap:10px;align-items:center;padding:7px 0;color:var(--mut);font-size:13.5px;font-weight:500}
+.steps li::before{content:"";width:18px;height:18px;border-radius:50%;border:3px solid var(--line);flex:none}
+.steps li.on{color:var(--tx);font-weight:700}
+.steps li.on::before{background:var(--blue);border-color:var(--blue);animation:pulse 1s infinite}
+.steps li.ok::before{background:#3DB360;border-color:#3DB360;content:"✓";color:#fff;font-size:11px;display:grid;place-items:center}
+.steps li.ok{color:var(--tx)}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(47,103,216,.25)}}
+.attach{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.attach button{border:2px dashed var(--blue);background:transparent;color:var(--blue);border-radius:99px;padding:8px 12px;font:600 13px 'Poppins',sans-serif;cursor:pointer}
+.attach button.on{background:var(--blue);color:#fff;border-style:solid}
+.sw{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sw button{width:52px;height:30px;border-radius:99px;border:0;background:var(--line);position:relative;cursor:pointer;flex:none;transition:background .25s}
+.sw button::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.3,1.6,.5,1)}
+.sw button.on{background:#3DB360}.sw button.on::after{transform:translateX(22px)}
+.code{font-weight:800;font-size:22px;letter-spacing:2px;color:var(--navy);background:var(--soft);border-radius:14px;padding:12px;text-align:center;margin:10px 0}
+nav{position:absolute;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:2px solid var(--line);padding:6px 6px 8px}
+nav button{flex:1;border:0;background:none;font:600 11px 'Poppins',sans-serif;color:var(--mut);padding:6px 0;border-radius:14px;cursor:pointer}
+nav button span{display:block;font-size:22px;transition:transform .2s}
+nav button.on{color:var(--red);background:var(--pink)}nav button.on span{transform:scale(1.2) rotate(-6deg)}
+#sos{position:absolute;right:14px;bottom:84px;width:58px;height:58px;border-radius:50%;border:0;border-bottom:5px solid #8E0A20;background:var(--red);color:#fff;font:800 14px 'Poppins',sans-serif;cursor:pointer;animation:ring 2s infinite;z-index:5}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(200,16,46,.5)}100%{box-shadow:0 0 0 18px rgba(200,16,46,0)}}
+.sheet{position:absolute;inset:0;background:rgba(10,15,40,.55);display:none;align-items:flex-end;z-index:10}
+.sheet.on{display:flex}
+.sheet>div{width:100%;background:var(--card);border-radius:26px 26px 0 0;padding:20px 16px 24px;animation:up .3s cubic-bezier(.3,1.2,.5,1)}
+@keyframes up{from{transform:translateY(100%)}}
+#toast{position:absolute;left:50%;top:70px;transform:translate(-50%,-120px);background:var(--navy);color:#fff;padding:10px 16px;border-radius:14px;font-size:13.5px;font-weight:600;z-index:20;transition:transform .4s cubic-bezier(.3,1.5,.5,1);max-width:88%;text-align:center}
+#toast.on{transform:translate(-50%,0)}
+.cf{position:absolute;top:-10px;width:9px;height:14px;border-radius:2px;z-index:30;pointer-events:none;animation:fall 1.6s ease-in forwards}
+@keyframes fall{to{transform:translateY(900px) rotate(540deg);opacity:.2}}
+.tag{display:inline-block;background:var(--pink);color:var(--red);border-radius:99px;padding:3px 10px;font-size:11px;font-weight:700}
+.pol{background:linear-gradient(135deg,var(--navy),#0F2257);border-color:#0F2257;color:#fff}
+.pol .tag{background:var(--red);color:#fff}.pol .bar{background:rgba(255,255,255,.2)}
+.steps li.no::before{content:"✕";background:var(--red);border-color:var(--red);color:#fff;font-size:11px;display:grid;place-items:center}
+.steps li.no{color:var(--tx)}
+select{width:100%;padding:11px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--tx);font:500 14px 'Poppins',sans-serif;margin:10px 0}
+.games{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.game{border:2px solid var(--line);border-bottom-width:5px;background:var(--card);border-radius:16px;padding:12px 4px;text-align:center;font:600 12px 'Poppins',sans-serif;color:var(--tx);cursor:pointer}
+.game span{display:block;font-size:32px;margin-bottom:4px;transition:transform .2s}.game:active span{transform:scale(1.3) rotate(-10deg)}
+.ap{font-size:44px;border:0;background:var(--soft);border-radius:18px;padding:14px;cursor:pointer;transition:transform .2s}.ap.rev{animation:jump .5s;background:var(--pink)}
+input[type=date]{width:100%;padding:11px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--tx);font:500 14px 'Poppins',sans-serif;margin:0 0 10px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="apple" viewBox="0 0 100 100"><path d="M52 27C64 6 82 12 82 12c0 14-12 22-30 15z" fill="#17327A"/><path d="M50 30C38 21 14 25 12 52c-2 24 14 46 28 46 6 0 7-4 10-4s4 4 10 4c14 0 30-22 28-46-2-27-26-31-38-22z" fill="#C8102E"/></symbol>
+</defs></svg>
+<div id="app">
+<div id="toast"></div>
+<header>
+<svg width="34" height="34"><use href="#apple"/></svg>
+<b>Tecni<i>Seguros</i></b>
+<div class="chip"><span>🔥 <em id="streak" style="font-style:normal">14</em></span><span id="lvc"></span></div>
+</header>
+<main>
+<section id="s0" class="on">
+<div class="teo">
+<svg viewBox="0 0 100 100" id="teo"><use href="#apple"/><g class="eye"><ellipse cx="38" cy="58" rx="5" ry="7" fill="#fff"/><ellipse cx="62" cy="58" rx="5" ry="7" fill="#fff"/><circle cx="39" cy="59" r="2.6" fill="#17327A"/><circle cx="63" cy="59" r="2.6" fill="#17327A"/></g><g id="mouth"><path d="M36 68q14 21 28 0z" fill="#8E0A20"/><ellipse cx="50" cy="76" rx="6" ry="2.6" fill="#E8566C"/><path d="M37.5 68.6h25q-1.2 6.4-5.2 6.4H42.7q-4-0-5.2-6.4z" fill="#fff"/></g><circle cx="29" cy="70" r="4" fill="#fff" opacity=".25"/><circle cx="71" cy="70" r="4" fill="#fff" opacity=".25"/></svg>
+<div class="bubble" id="bubble">¡Hola, JuanCaqui! Soy Aris 🍎 Tu guía para entender tu seguro sin letra pequeña.</div>
+</div>
+<div class="card pol"><div class="sw"><div><span class="tag">Activa y protegida</span><h3 style="margin-top:6px;font-size:17px">PSM Internacional</h3><p style="color:#C9D2EE">Póliza #TS-94820-SV</p></div><div style="text-align:right"><p style="color:#C9D2EE">Cuota mensual</p><b id="cuota" style="font-size:22px;color:#7CE0A0">$65.00</b><p id="cdesc" style="color:#C9D2EE;font-size:11px"></p></div></div>
+<p style="color:#C9D2EE;margin-top:12px;display:flex;justify-content:space-between"><span>Deducible anual usado</span><b style="color:#FFD36B">$350 / $1,000</b></p><div class="bar"><i style="width:35%"></i></div>
+<p style="color:#C9D2EE">🏥 Red hospitalaria VIP · ✅ Sin copago extra</p>
+<div class="row" style="margin-top:12px"><button class="btn ghost" onclick="go(3)">Reembolsos</button><button class="btn" id="paybtn">⚡ Pagar cuota</button></div></div>
+<div class="card" id="lvcard"></div>
+<div class="card"><h3>Rachazo del día 🔥</h3><p>Cada reto alimenta a Aris. Si lo dejas sin comer pierde energía… ¡y tu racha corre peligro!</p>
+<div class="sw" style="margin-top:10px"><b style="font-size:13px">Vida de Aris ❤️</b><b id="av"></b></div><div class="bar"><i id="ab" style="background:linear-gradient(90deg,var(--red),#F4B400,#3DB360)"></i></div><p id="as" style="color:var(--tx);font-weight:600"></p>
+<div class="games"><button class="game" data-g="0"><span>🍎</span>Manzana de la suerte</button><button class="game" data-g="1"><span>🎡</span>Aris pregunta</button><button class="game" data-g="2"><span>🧮</span>¿Cuánto pagaría?</button></div></div>
+<div class="row">
+<button class="btn" id="cot">Cotizar PSM</button>
+<button class="btn ghost" onclick="go(1)">Ver mi TS Pass</button>
+</div>
+
+</section>
+
+<section id="s1">
+<h2>Mi TS Pass</h2>
+<div class="card"><h3>Beneficios usados</h3><p><span id="rc">0</span> de 4 · Meta: usar al menos uno en tus primeros 90 días</p><div class="bar"><i id="rbar"></i></div></div>
+<div id="perks"></div>
+<div class="card"><h3>Niveles y beneficios</h3><p>Entre más usas tu seguro, más suben tus descuentos y tus ventajas.</p><div id="lvt" style="margin-top:8px"></div></div>
+</section>
+
+<section id="sc">
+<h2>Cotiza y compara</h2>
+<div class="card"><h3>Letra pequeña en grande</h3><p>Compara cómo funciona PSM frente a un seguro tradicional, sin tecnicismos.</p>
+<div class="row" style="margin:12px 0"><button class="btn blue" data-pl="0">PSM</button><button class="btn ghost" data-pl="1">Tradicional</button></div><div id="cmp"></div></div>
+<div class="card"><h3>Cotizador express en 1 minuto</h3><p>Elige tu edad y genera tu ficha comparativa.</p>
+<select id="age"><option value="20">20 a 25 años · Tarifa joven</option><option value="26">26 a 30 años · Plan profesional</option></select>
+<button class="btn" id="qgo">Generar ficha comparativa</button><div class="code" id="qres" style="display:none;font-size:14px;letter-spacing:0"></div><button class="btn ghost" id="wa" style="margin-top:10px">💬 Hablar con mi corredor</button></div>
+</section>
+<section id="s2">
+<h2>Mi salud</h2>
+<div class="card">
+<h3>Reembolso ágil</h3>
+<p>Adjunta tus documentos y sigue el avance como en un delivery.</p>
+<div class="attach" id="att"><button>🧾 Factura</button><button>📄 Receta</button><button>🧪 Examen</button></div>
+<button class="btn" id="send" disabled>Enviar a mi corredor</button>
+<ul class="steps" id="steps" style="display:none"></ul>
+</div>
+<div class="card"><h3>Agenda tu chequeo anual 🩺</h3><p>Incluido en tu TS Pass, 100% cubierto.</p><select id="hos"><option>Hospital red PSM · San Salvador</option><option>Hospital red PSM · San Miguel</option><option>Hospital red PSM · Santa Ana</option></select><input type="date" id="dt"><button class="btn blue" id="ag">Reservar cita</button></div>
+<div class="card"><h3>Estado de tus trámites</h3><div id="tram"></div></div>
+<div class="card" id="trad" style="display:none;background:var(--pink)"><h3>Traductor clínico-financiero</h3><p style="color:var(--tx)">Tu corredor revisó la cobertura PSM. <b>Copago estimado: $25</b> (demo). Deducible pendiente: $0. Atiéndete en hospitales de la red para pagar menos. Respuesta en menos de 24 h.</p></div>
+</section>
+
+<section id="s3">
+<div class="card pol" style="display:flex;gap:12px;align-items:center"><div class="ico" style="background:var(--red)">😎</div><div><h3 style="font-size:17px">JuanCaqui</h3><p style="color:#C9D2EE" id="pf"></p></div></div>
+<div class="card"><h3>Insignias</h3><div class="attach" id="bdg"></div><h3 style="margin-top:6px">Historial de uso del año</h3><div id="his"></div></div>
+<div class="card">
+<h3>Pago sin fricción</h3>
+<div class="sw"><p>Domiciliar mensualidad PSM</p><button id="dom" aria-label="Domiciliar"></button></div>
+<button class="btn blue" id="pay" style="margin-top:12px">Pagar prima inicial</button>
+<p id="payst" style="margin-top:8px"></p><p style="margin-top:8px">Próximo cobro: 15 de nov · Historial: ✅ Oct $65 · ✅ Sep $65 · ✅ Ago $65</p>
+</div>
+<div class="card">
+<h3>Portabilidad laboral</h3>
+<p>¿Cambiaste de trabajo? Activa tu póliza individual en máximo 3 días, sin perder antigüedad.</p>
+<button class="btn ghost" id="port" style="margin-top:10px">Cambié de trabajo</button>
+<div class="bar" id="pbarw" style="display:none"><i id="pbar"></i></div>
+</div>
+<div class="card">
+<h3>Invita a un amigo</h3>
+<p>2 de 3 amigos · Al tercero ganas 200 💎</p><div class="bar"><i style="width:66%"></i></div><div class="code" id="ref">ARIS-AMIGO26</div>
+<button class="btn" id="copy">Copiar mi código</button>
+</div>
+<button class="btn ghost" id="theme">Cambiar tema claro/oscuro</button>
+</section>
+</main>
+<button id="sos">SOS</button>
+<nav id="nav"><button class="on"><span>🏠</span>Inicio</button><button><span>🎟️</span>TS Pass</button><button><span>⚖️</span>Cotiza</button><button><span>🩺</span>Salud</button><button><span>👤</span>Cuenta</button></nav>
+<div class="sheet" id="sheet"><div>
+<h2 style="margin-top:0">¿Qué necesitas ahora?</h2>
+<p style="margin-bottom:12px">Tu corredor también recibe el aviso.</p>
+<button class="btn" data-sos="Llamando a emergencia médica 24/7…" style="margin-bottom:10px">🚑 Emergencia médica</button>
+<button class="btn blue" data-sos="Solicitando grúa y asistencia vial…" style="margin-bottom:10px">🚗 Asistencia vial</button>
+<button class="btn ghost" id="sclose">Cerrar</button>
+</div></div>
+<div class="sheet" id="sh2"><div></div></div><div class="sheet" id="sh3" style="z-index:12"><div></div></div>
+</div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let rc=0,uses=1;const seen={},T=['','¡Usa tu carnet digital TS Pass en farmacias y hospitales aliados! 🎟️','Aquí tienes la letra pequeña en grande. ¡Cero sorpresas! 🔍','Sube tus recetas o exámenes para tramitar tu reembolso. 📑','Tus pagos y tu portabilidad, en un solo lugar. ⚡'];
+const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e.t);e.t=setTimeout(()=>e.classList.remove('on'),2400)};
+
+function confetti(){const a=$('#app'),c=['#C8102E','#17327A','#2F67D8','#F4B400','#3DB360'];for(let i=0;i<40;i++){const d=document.createElement('i');d.className='cf';d.style.left=Math.random()*100+'%';d.style.background=c[i%5];d.style.animationDelay=Math.random()*.4+'s';a.appendChild(d);setTimeout(()=>d.remove(),2200)}}
+function go(n){$$('section').forEach((s,i)=>s.classList.toggle('on',i===n));$$('#nav button').forEach((b,i)=>b.classList.toggle('on',i===n));$('main').scrollTop=0;if(n&&!seen[n]){seen[n]=1;toast('🍎 '+T[n])}}
+$$('#nav button').forEach((b,i)=>b.onclick=()=>go(i));
+/* Aris */
+const msgs=['Un deducible es lo que pagas tú antes de que el seguro cubra. ¡Sin sustos! 💪','¡Hola, JuanCaqui! Tu chequeo anual en hospital está disponible 🩺','Si cambias de trabajo, tu póliza viaja contigo 🚀','Invita a un amigo y cuidémonos juntos 🍎','¿Una duda? Tu corredor te responde en menos de 24 h.','Usa tu seguro y sube de nivel: más usos, más descuentos 🏅'];
+let mi=0;$('#teo').onclick=()=>{$('#bubble').textContent=msgs[mi++%msgs.length];$('#bubble').style.animation='none';void $('#bubble').offsetWidth;$('#bubble').style.animation=''};
+setInterval(()=>{if(!document.hidden)$('#teo').click()},7000);
+$('#cot').onclick=()=>go(2);
+/* Pass */
+const P=[['💊','15% en farmacias','Muestra tu carnet TS Pass en cadena aliada. Uso ilimitado.'],['🦾','Prótesis y ortopedia','Alianza con Electrolab Medic y ST Medic.'],['🩺','Chequeo anual','100% cubierto: una consulta preventiva al año en la red PSM.'],['🚗','Grúa y asistencia vial','Auxilio mecánico, llanta y traslado. 3 eventos al año.']];
+$('#perks').innerHTML=P.map((p,i)=>`<div class="card perk" id="pk${i}"><div class="ico">${p[0]}</div><div style="flex:1"><h3>${p[1]}</h3><p>${p[2]}</p></div><button class="btn" data-p="${i}">Usar</button></div>`).join('');
+const P2=['Muestra este carnet en farmacias aliadas.','Preséntalo en Electrolab Medic o ST Medic.','Preséntalo en tu hospital de la red PSM.','Muestra tu ID a la central de asistencia.'];
+$$('[data-p]').forEach(b=>b.onclick=()=>{const i=+b.dataset.p;if(!b.dataset.u){b.dataset.u=1;b.textContent='Ver carnet';$('#pk'+i).classList.add('done');rc++;$('#rc').textContent=rc;$('#rbar').style.width=rc/4*100+'%';useIt(P[i][0],P[i][1]);confetti()}
+modal(`<div style="text-align:center"><span class="tag">TS Pass · Activo</span><h2 style="margin:8px 0 2px">${P[i][1]}</h2><p>${P2[i]}</p><div style="display:flex;justify-content:center;margin:14px 0">${qr(i)}</div><div class="code">TS-${8492+i*137}-GENZ</div><p>Titular: JuanCaqui · Válido por <b id="vt">05:00</b> min</p></div><button class="btn" data-x style="margin-top:12px">Listo</button>`);
+let n=300;clearInterval(window.tm);window.tm=setInterval(()=>{n--;const e=$('#vt');if(!e||n<0)return clearInterval(window.tm);e.textContent=String(n/60|0).padStart(2,'0')+':'+String(n%60).padStart(2,'0')},1000)});
+/* Salud */
+let att=0;$$('#att button').forEach(b=>b.onclick=()=>{b.classList.toggle('on');att=$$('#att .on').length;$('#send').disabled=!att});
+const S=['Recibido por Aris','Aris pre-revisa tus datos','Tu corredor analiza la cobertura','Reembolso aprobado','Dinero en camino a tu cuenta'];
+$('#send').onclick=()=>{TR.unshift(['⏳','Nuevo reembolso','En revisión','Enviado ahora · Asignado a corredor TS']);rt();const u=$('#steps');u.style.display='block';u.innerHTML=S.map(s=>`<li>${s}</li>`).join('');$('#send').disabled=true;let i=0;const L=$$('#steps li');const t=setInterval(()=>{if(i>0)L[i-1].className='ok';if(i<L.length)L[i].className=i===L.length-1?'ok':'on';else{clearInterval(t);return}if(i===2)$('#trad').style.display='block';if(i===L.length-1){TR[0]=['✅','Nuevo reembolso','Completado','Dinero en camino a tu cuenta'];rt();useIt('💶','Reembolso completado');confetti();toast('¡Reembolso completado! 🎉')}i++},1300)};
+/* Cuenta */
+$('#dom').onclick=e=>e.target.classList.toggle('on');
+$('#pay').onclick=()=>{$('#payst').textContent='Procesando pago…';$('#pay').disabled=true;setTimeout(()=>{$('#payst').textContent='✅ Pago exitoso. Póliza emitida en ACSA, sin exámenes médicos.';confetti();},1400)};
+$('#port').onclick=()=>{$('#pbarw').style.display='block';$('#port').disabled=true;setTimeout(()=>$('#pbar').style.width='100%',50);toast('Activando tu póliza individual (máx. 3 días)')};
+$('#copy').onclick=()=>{try{navigator.clipboard.writeText($('#ref').textContent)}catch(e){}toast('Código copiado. ¡Compártelo!');};
+$('#theme').onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).colorScheme==='dark';r.dataset.theme=d?'light':'dark'};
+/* Cotiza */
+const C=[['Cobertura médica PSM Internacional','Aprobación inmediata',['Deducible claro: sin cobros ocultos en urgencias.','Red hospitalaria VIP: los mejores centros del país.','Portabilidad laboral: si cambias de trabajo, tu seguro no se cae.']],['Seguro tradicional','Letra pequeña oculta',['Deducibles complejos: exclusiones extensas y confusas.','Cotización lenta: de 5 a 7 días en algunos competidores.','Sin portabilidad: si dejas la empresa pierdes tu antigüedad.']]];
+function plan(i){$$('[data-pl]').forEach((b,k)=>b.className='btn '+(k===i?'blue':'ghost'));const c=C[i];$('#cmp').innerHTML=`<h3>${c[0]}</h3><span class="tag">${c[1]}</span><ul class="steps">${c[2].map(t=>`<li class="${i?'no':'ok'}">${t}</li>`).join('')}</ul>`}
+$$('[data-pl]').forEach(b=>b.onclick=()=>plan(+b.dataset.pl));plan(0);
+$('#qgo').onclick=()=>{const r=$('#qres');r.style.display='block';r.textContent=$('#age').value==='20'?'¡Cuota estimada desde $45.00/mes, con aprobación sin exámenes médicos! 🎉':'Cuota estimada desde $65.00/mes con el plan profesional. Respuesta en menos de 24 h.';confetti();};
+/* Trámites, carnet y modales */
+const TR=[['⏳','Reembolso chequeo general','En revisión','Enviado hace 2 horas · Corredor TS'],['✅','Descuento farmacia aliada','Completado','Usado ayer con TS Pass']];
+const rt=()=>$('#tram').innerHTML=TR.map(t=>`<div class="perk" style="padding:8px 0"><div class="ico" style="width:42px;height:42px;font-size:20px">${t[0]}</div><div style="flex:1"><h3 style="font-size:13.5px">${t[1]} · <span style="color:var(--blue)">${t[2]}</span></h3><p>${t[3]}</p></div></div>`).join('');rt();
+const qr=(k=0)=>{let s='',x=7+k*5;const r=()=>(x=x*16807%2147483647)/2147483647,f=(a,b)=>a<7&&b<7?(a%6==0||b%6==0||(a>1&&a<5&&b>1&&b<5)):null;for(let i=0;i<21;i++)for(let j=0;j<21;j++){let v=f(i,j);if(v===null)v=f(i,20-j);if(v===null)v=f(20-i,j);if(v===null)v=r()>.5;if(v)s+=`<rect x="${j}" y="${i}" width="1" height="1"/>`}return `<svg viewBox="0 0 21 21" width="130" height="130" fill="#17327A" style="background:#fff;padding:8px;border-radius:14px;box-sizing:content-box">${s}</svg>`};
+const modal=h=>{$('#sh2>div').innerHTML=h;$('#sh2').classList.add('on')};
+$('#sh2').onclick=e=>{if(e.target.dataset.x!==undefined||e.target.id==='sh2'){clearInterval(window.tm);$('#sh2').classList.remove('on')}};
+$('#paybtn').onclick=()=>{modal(`<h2 style="margin-top:0">Pago automático PSM</h2><p>Paga tu cuota de $${q()} con tu tarjeta guardada, sin fallas técnicas.</p><div class="code" style="font-size:15px;letter-spacing:0">Tarjeta •••• 4892 · Comisión $0.00</div><button class="btn" id="okpay" style="margin-bottom:10px">Confirmar pago de $${q()}</button><button class="btn ghost" data-x>Cancelar</button>`);$('#okpay').onclick=()=>{$('#sh2').classList.remove('on');confetti();toast('¡Pago exitoso! Cero fricción.')}};
+/* Juegos, tienda, agenda */
+const gd=[0,0,0],SC=[['🩺 Consulta general',60],['🦴 Radiografía',150],['🚑 Emergencia',1500]];
+function sim(){const c=SC[+$('#scn').value][1],net=$('#net').classList.contains('on'),d=Math.min(c,650),cp=(c-d)*(net?.1:.3),t=d+cp;$('#sr').innerHTML=`Tú pagas <b>$${t.toFixed(2)}</b> · PSM cubre <b>$${(c-t).toFixed(2)}</b><br><small>Deducible $${d.toFixed(2)} + copago $${cp.toFixed(2)} (estimado de ejemplo)</small>`}
+function game(i){
+if(i===0){modal(`<h2 style="margin-top:0">🍎 Manzana de la suerte</h2><p>Elige una manzana para alimentar a Aris. Un intento al día.</p><div class="row" style="margin:14px 0"><button class="ap">🍎</button><button class="ap">🍎</button><button class="ap">🍎</button></div><p id="gm"></p><button class="btn ghost" data-x style="margin-top:10px">Cerrar</button>`);
+$$('.ap').forEach(b=>b.onclick=()=>{if(gd[0])return $('#gm').textContent='Ya jugaste hoy. ¡Vuelve mañana!';gd[0]=1;feed(25);const p=[['☕','un café en cadena aliada'],['💊','un cupón de $2 en farmacia'],['🚗','un lavado de auto con aliado']][Math.random()*3|0];b.textContent=p[0];b.classList.add('rev');confetti();$('#gm').textContent=`¡Ganaste ${p[1]}! Te lo enviamos por correo. Aris también comió: +25 ❤️`})}
+if(i===1)trivia();
+if(i===2){if(!gd[2]){gd[2]=1;feed(15)}modal(`<h2 style="margin-top:0">🧮 ¿Cuánto pagaría?</h2><p>Simula un gasto médico y mira tu parte, sin letra pequeña.</p><select id="scn">${SC.map((c,k)=>`<option value="${k}">${c[0]} · $${c[1]}</option>`).join('')}</select><div class="sw"><p>Hospital de la red PSM</p><button id="net" class="on"></button></div><div class="code" id="sr" style="font-size:15px;letter-spacing:0;line-height:1.5"></div><button class="btn ghost" data-x>Cerrar</button>`);
+$('#scn').onchange=sim;$('#net').onclick=e=>{e.target.classList.toggle('on');sim()};sim()}}
+$$('[data-g]').forEach(b=>b.onclick=()=>game(+b.dataset.g));
+$('#dt').min=new Date().toISOString().slice(0,10);
+$('#ag').onclick=()=>{const d=$('#dt').value;if(!d)return toast('Elige una fecha para tu cita 📅');TR.unshift(['📅','Chequeo anual · '+$('#hos').value.split('· ')[1],'Agendado',d]);rt();useIt('📅','Chequeo anual agendado');confetti();toast('¡Cita reservada! Te recordaré un día antes 🍎')};
+$('#wa').onclick=()=>{TR.unshift(['💬','Cotización PSM','En contacto','Tu corredor te escribe por WhatsApp en menos de 24 h']);rt();toast('Tu corredor te escribirá en menos de 24 h')};
+/* Niveles por uso del seguro */
+const LV=[['Bronce','🥉',0,10,1,2,'48 h',0],['Plata','🥈',2,15,1,3,'36 h',3],['Oro','🥇',4,20,2,4,'24 h',5],['Platino','💎',7,25,2,5,'12 h',8]],B=[['🛡️','Asegurado',1],['🏅','Constante',4],['🏆','Experto',7]],HIS=[['💊','Descuento en farmacia aliada','Hace 1 día']];
+const lv=()=>LV.reduce((a,l,i)=>uses>=l[2]?i:a,0),q=()=>(65*(1-LV[lv()][7]/100)).toFixed(2);
+function render(){const i=lv(),L=LV[i],N=LV[i+1];$('#lvc').textContent=L[1]+' '+L[0];
+$('#lvcard').innerHTML=`<div class="sw"><div><span class="tag">Nivel ${i+1} de 4</span><h3 style="font-size:19px;margin-top:6px">${L[0]}</h3></div><div style="font-size:46px">${L[1]}</div></div><p style="margin-top:6px">${N?`Llevas <b>${uses}</b> usos de tu seguro este año. Con <b>${N[2]-uses}</b> más subes a ${N[1]} ${N[0]}: ${N[3]}% en farmacias y reembolsos en ${N[6]}.`:'¡Nivel máximo! Disfrutas todos los beneficios.'}</p><div class="bar"><i style="width:${N?(uses-L[2])/(N[2]-L[2])*100:100}%"></i></div>`;
+P[0][1]=L[3]+'% en farmacias';$('#pk0 h3').textContent=P[0][1];$('#pk2 p').textContent=`${L[4]>1?L[4]+' chequeos':'1 chequeo'} preventivo(s) al año en la red PSM, 100% cubierto.`;$('#pk3 p').textContent=`Auxilio mecánico, llanta y traslado. ${L[5]} eventos al año.`;
+$('#cuota').textContent='$'+q();$('#cdesc').textContent=L[7]?`Incluye ${L[7]}% por lealtad`:'Sube de nivel y baja tu cuota';
+$('#lvt').innerHTML=LV.map((l,j)=>`<div class="perk" style="padding:6px 0;opacity:${j<=i?1:.55}"><div class="ico" style="width:46px;height:46px;font-size:22px;${j==i?'background:#DDF5E3':''}">${j<=i?l[1]:'🔒'}</div><div style="flex:1"><h3 style="font-size:14px">${l[0]}${j==i?' · Tú estás aquí':''}</h3><p>${l[2]}+ usos · ${l[3]}% farmacias · ${l[4]} chequeo(s) · ${l[5]} grúas · reembolso en ${l[6]}${l[7]?' · '+l[7]+'% en tu cuota':''}</p></div></div>`).join('');
+$('#pf').textContent=`${L[1]} ${L[0]} · ${uses} usos este año`;
+$('#bdg').innerHTML=B.map(b=>`<button class="${uses>=b[2]?'on':''}" style="${uses>=b[2]?'':'opacity:.45;border-style:solid'}">${b[0]} ${b[1]}</button>`).join('');
+$('#his').innerHTML=HIS.map(h=>`<div class="perk" style="padding:6px 0"><div class="ico" style="width:40px;height:40px;font-size:18px">${h[0]}</div><div style="flex:1"><h3 style="font-size:13.5px">${h[1]}</h3><p>${h[2]}</p></div></div>`).join('')}
+function useIt(e,t){const a=lv();uses++;HIS.unshift([e,t,'Hoy']);const b=lv();render();if(b>a){const L=LV[b];setTimeout(()=>{confetti();$('#sh3>div').innerHTML=`<div style="text-align:center"><div style="font-size:72px;animation:jump .6s">${L[1]}</div><h2>¡Subiste a nivel ${L[0]}!</h2><p>Por usar tu seguro ${uses} veces este año. Ahora tienes ${L[3]}% en farmacias, ${L[4]} chequeo(s) al año, ${L[5]} eventos de grúa y reembolsos en ${L[6]}${L[7]?`, además de ${L[7]}% de descuento en tu cuota`:''}.</p></div><button class="btn" data-x style="margin-top:14px">¡Genial!</button>`;$('#sh3').classList.add('on')},700)}}
+$('#sh3').onclick=e=>{if(e.target.dataset.x!==undefined||e.target.id==='sh3')$('#sh3').classList.remove('on')};
+render();
+/* Aris vivo + trivia */
+let en=60,fed=0;
+function mood(){en=Math.max(0,Math.min(100,en));const m=en>70?['M40 74q10 9 20 0','¡Aris está feliz! 😄 Mantén su racha viva.']:en>30?['M42 77q8 3 16 0','Aris tiene hambre 😋 ¡Dale una manzanita!']:en>0?['M40 80q10-8 20 0','¡Aris está débil! 🥺 Necesita comer ya.']:['M42 78h16','Aris se durmió 😴 Despiértalo con un reto.'];$('#av').textContent=en+'%';$('#ab').style.width=en+'%';$('#as').textContent=m[1];$('#teo').style.filter=en?'':'grayscale(1)'}
+function feed(n){en+=n;if(!fed){fed=1;$('#streak').textContent=15;toast('🔥 ¡Racha de 15 días! Aris está agradecido')}mood();const t=$('#teo');t.style.animation='jump .6s';setTimeout(()=>t.style.animation='',600)}
+setInterval(()=>{if(!document.hidden){en-=2;mood()}},6000);mood();
+const QZ=[['☕','Beneficios','¿Dónde puedes mostrar tu carnet TS Pass para obtener descuentos?',['En cafeterías y farmacias aliadas','Solo en el banco','En ninguna parte','Solo en el extranjero'],'Tu plan PSM incluye descuentos en cafeterías y farmacias aliadas.'],
+['🩺','Salud','¿Cuántos chequeos preventivos al año tienes cubiertos al 100% en la red PSM?',['Mínimo 1 (2 en Oro y Platino)','Ninguno','10','Solo en emergencias'],'Tu chequeo anual está incluido en el TS Pass. ¡Agéndalo desde Salud!'],
+['⚡','Trabajo','Si cambias de trabajo, ¿en cuántos días máximo activas tu póliza individual?',['3 días','30 días','6 meses','Nunca'],'Tu expediente queda guardado y conservas tu antigüedad.'],
+['🚗','Asistencia','¿Qué botón avisa a tu corredor y llama a asistencia las 24 horas?',['SOS','Cotiza','Insignias','Referidos'],'El botón SOS conecta con grúa o emergencia médica y notifica a tu corredor.'],
+['🏅','Niveles','¿Con cuántos usos de tu seguro al año llegas a nivel Oro?',['4','1','12','Nunca llegas'],'Entre más usas tu seguro, más suben tus descuentos y tus ventajas.'],
+['🧾','Reembolsos','¿Cómo sigues el avance de tu reembolso?',['Con una barra de progreso tipo delivery','Llamando 5 veces','Por carta','No se puede'],'Subes tus facturas y ves cada paso hasta que el dinero vuelve a ti.'],
+['🦾','Aliados','¿Con qué aliados tienes alianza para prótesis, ortopedia y rehabilitación?',['Electrolab Medic y ST Medic','Pizzerías','Gimnasios','Aerolíneas'],'Son beneficios cotidianos de tu TS Pass, no regalos genéricos.'],
+['🚀','Emisión','¿Cómo es la aprobación de tu póliza para jóvenes en ACSA?',['Inmediata y sin exámenes médicos previos','Tarda 6 meses','Exige 10 exámenes','No existe'],'Tu cotización llega en menos de 24 horas y la emisión es ágil.']];
+function trivia(){const rs=[...QZ].sort(()=>Math.random()-.5).slice(0,5);let n=0,ok=0;
+modal(`<div class="sw"><h2 style="margin:0">Aris pregunta ❓</h2><b id="tq">1/5</b></div><div class="bar"><i id="tt" style="width:100%;background:var(--blue)"></i></div><div id="tb"></div>`);
+const end=()=>{clearInterval(window.tm);const w=ok>=4;feed(ok*6);modal(`<div style="text-align:center"><div style="font-size:64px">${w?'👑':ok>=2?'🍎':'🥺'}</div><h2>${ok} de 5 correctas</h2><p>${w?'¡Corona para ti! Aris está feliz y recupera mucha energía.':'Aris se comió una manzanita. ¡Prueba otra ronda!'}</p></div><div class="row" style="margin-top:14px"><button class="btn ghost" id="tr">Otra ronda</button><button class="btn" data-x>Listo</button></div>`);$('#tr').onclick=trivia;if(w)confetti()};
+const ask=()=>{const [e,c,q,o,f]=rs[n],op=[...o].sort(()=>Math.random()-.5);let sec=15;$('#tq').textContent=(n+1)+'/5';
+$('#tb').innerHTML=`<span class="tag">${e} ${c}</span><p style="color:var(--tx);font-weight:600;font-size:15px;margin:8px 0">${q}</p>`+op.map(x=>`<button class="opt">${x}</button>`).join('')+`<p id="tf" style="margin-top:10px"></p><button class="btn blue" id="tn" style="display:none;margin-top:10px"></button>`;
+const tt=$('#tt');tt.style.transition='none';tt.style.width='100%';void tt.offsetWidth;tt.style.transition='width 15s linear';tt.style.width='0';
+const fin=(g,b)=>{clearInterval(window.tm);$$('.opt').forEach(x=>{x.disabled=true;if(x.textContent===o[0])x.classList.add('ok')});if(b&&!g)b.classList.add('no');if(g){ok++;confetti()}$('#tf').innerHTML=(g?'🎉 ¡Correcto! ':b?'😅 ¡Casi! ':'⏰ ¡Se acabó el tiempo! ')+'💡 <b>¿Sabías que?</b> '+f;const t=$('#tn');t.style.display='block';t.textContent=n<4?'Siguiente':'Ver resultado';t.onclick=()=>{n++;next()}};
+$$('.opt').forEach(b=>b.onclick=()=>fin(b.textContent===o[0],b));
+clearInterval(window.tm);window.tm=setInterval(()=>{if(--sec<=0)fin(false)},1000)};
+const next=()=>{if(n>=5)return end();const cats=['☕','🩺','⚡','🚗','🏅','🧾'];let k=0;$('#tb').innerHTML=`<div id="ru" style="text-align:center;font-size:64px;margin:14px 0">🎡</div><p style="text-align:center">Girando la ruleta…</p>`;const sp=setInterval(()=>{const r=$('#ru');if(!r)return clearInterval(sp);r.textContent=cats[k++%6]},90);setTimeout(()=>{clearInterval(sp);if($('#ru'))ask()},1000)};
+next()}
+/* SOS */
+$('#sos').onclick=()=>$('#sheet').classList.add('on');
+$('#sclose').onclick=()=>$('#sheet').classList.remove('on');
+$$('[data-sos]').forEach(b=>b.onclick=()=>{$('#sheet').classList.remove('on');modal(`<h2 style="margin-top:0">🚨 ¡SOS activado!</h2><p>${b.dataset.sos} Tu corredor y la central recibieron tu ubicación.</p><div class="code" id="tm" style="font-size:15px;letter-spacing:0">Conectando con operador… 00:15</div><button class="btn blue" data-x>Cerrar alerta</button>`);let n=15;window.tm=setInterval(()=>{n--;$('#tm').textContent=n>0?'Conectando con operador… 00:'+String(n).padStart(2,'0'):'Operador en línea ✅';if(n<=0)clearInterval(window.tm)},1000)});
+</script>
+</body>
+</html>
